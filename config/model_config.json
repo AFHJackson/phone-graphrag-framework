@@ -1,0 +1,77 @@
+{
+  "model": {
+    "name": "Gemma 3n E4B",
+    "version": "gemma-3n-E4B-it-int4",
+    "filename": "gemma-3n-E4B-it-int4.litertlm",
+    "sizeGb": 4.3,
+    "parameters": "4B (effective via selective activation)",
+    "quantization": "INT4",
+    "source": "https://huggingface.co/google/gemma-3n-E4B-it-litert-lm",
+    "license": "Gemma Terms of Use",
+    "phonePath": "/data/local/tmp/gemma-3n-E4B-it-int4.litertlm"
+  },
+  "library": {
+    "name": "LiteRT LM",
+    "package": "com.google.ai.edge.litertlm:litertlm",
+    "version": "0.0.0-alpha05",
+    "repository": "https://maven.google.com",
+    "notes": "Pin to alpha05 - alpha06+ changes NPU APIs"
+  },
+  "mediapipe": {
+    "package": "com.google.mediapipe:tasks-genai",
+    "version": "0.10.27",
+    "backend": "GPU"
+  },
+  "inference": {
+    "backend": "GPU",
+    "maxTokens": 4096,
+    "contextLength": 1024,
+    "temperature": 0.5,
+    "topK": 40,
+    "topP": 0.95
+  },
+  "entityExtraction": {
+    "entityTypes": [
+      "ORGANIZATION",
+      "PROGRAM",
+      "PROJECT",
+      "PERSON",
+      "LOCATION",
+      "BUDGET_ITEM",
+      "METRIC",
+      "OTHER"
+    ],
+    "relationshipTypes": [
+      "FUNDS",
+      "MANAGES",
+      "IMPLEMENTS",
+      "BENEFITS",
+      "DEPENDS_ON",
+      "LOCATED_IN",
+      "MEASURES",
+      "ALLOCATES_TO",
+      "OTHER"
+    ]
+  },
+  "preprocessing": {
+    "maxChunkLength": 3000,
+    "tabularDetectionThreshold": 0.3,
+    "skipThreshold": 0.7,
+    "normalizeNonAscii": true,
+    "collapseWhitespace": true
+  },
+  "alternativeModels": {
+    "smaller": {
+      "name": "Gemma 3 1B",
+      "filename": "Gemma3-1B-IT_multi-prefill-seq_q8_ekv2048.task",
+      "sizeGb": 1.0,
+      "notes": "Lower quality but faster"
+    },
+    "larger": {
+      "name": "Gemma 2 2B",
+      "filename": "Gemma2-2B-IT_multi-prefill-seq_q8_ekv1280.task",
+      "sizeGb": 2.5,
+      "notes": "Higher quality, more memory"
+    }
+  }
+}

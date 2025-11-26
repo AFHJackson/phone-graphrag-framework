@@ -1,0 +1,55 @@
+{
+  "device": {
+    "manufacturer": "Samsung",
+    "model": "Galaxy S25 Ultra",
+    "codename": "SM-S938U",
+    "serial": "R5CXC213RHA"
+  },
+  "soc": {
+    "name": "Snapdragon 8 Elite",
+    "manufacturer": "Qualcomm",
+    "process": "3nm TSMC",
+    "cpuCores": 8,
+    "cpuMaxFreq": "4.32 GHz"
+  },
+  "gpu": {
+    "name": "Adreno 830",
+    "openclVersion": "3.0",
+    "vramMb": 4096,
+    "features": ["FP16", "INT8", "INT4"]
+  },
+  "memory": {
+    "ramGb": 12,
+    "storageGb": 256,
+    "storageType": "UFS 4.0"
+  },
+  "android": {
+    "version": "15",
+    "apiLevel": 35,
+    "securityPatch": "2025-10-01",
+    "oneUiVersion": "7.0"
+  },
+  "adb": {
+    "usbDebugging": true,
+    "wirelessDebugging": false,
+    "serialNumber": "R5CXC213RHA"
+  },
+  "benchmarks": {
+    "modelLoadTimeSec": 0.65,
+    "prefillTokPerSec": 1876,
+    "decodeTokPerSec": 45,
+    "perChunkTimeSec": {
+      "min": 30,
+      "avg": 45,
+      "max": 60
+    },
+    "memoryUsagePeakGb": 5.1,
+    "gpuUtilizationPercent": 90
+  },
+  "notes": [
+    "Tested with Gemma 3n E4B INT4 model",
+    "LiteRT alpha05 (stable for GPU backend)",
+    "Thermal throttling observed after 30+ minutes",
+    "USB-C connection recommended for power + data"
+  ]
+}

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres-age:
+    image: apache/age:latest
+    container_name: graphrag-db
+    environment:
+      POSTGRES_USER: graphrag
+      POSTGRES_PASSWORD: graphrag_secure_password
+      POSTGRES_DB: knowledge_base
+    ports:
+      - "5432:5432"
+    volumes:
+      - graphrag_data:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U graphrag -d knowledge_base"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  graphrag_data:
+    driver: local

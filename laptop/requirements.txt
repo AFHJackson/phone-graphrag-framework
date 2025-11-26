@@ -1,0 +1,25 @@
+# Phone GraphRAG Framework - Python Dependencies
+
+# Database
+psycopg2-binary>=2.9.9
+
+# Document Processing
+pypdf>=3.17.0
+python-docx>=1.1.0
+langchain>=0.1.0
+langchain-text-splitters>=0.0.1
+
+# Data Processing
+pydantic>=2.5.0
+python-dotenv>=1.0.0
+
+# AI Integration (for laptop-side queries)
+ollama>=0.1.6
+
+# Utilities
+click>=8.1.7
+rich>=13.7.0
+tqdm>=4.66.1
+
+# Testing
+pytest>=7.4.3

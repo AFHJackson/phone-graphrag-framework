@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+.venv/
+pip-log.txt
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Build outputs
+build/
+dist/
+*.egg-info/
+.gradle/
+
+# Android
+phone-app/app/build/
+phone-app/.gradle/
+*.apk
+*.aab
+local.properties
+
+# Data files (don't commit large data)
+*.json
+!config/*.json
+!package.json
+data/
+results/
+chunks/
+
+# Database
+*.sql.bak
+pgdata/
+
+# Secrets
+.env
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary
+tmp/
+temp/
+
+# Model files (too large for git)
+*.litertlm
+*.gguf
+*.bin
+models/
