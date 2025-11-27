@@ -65,9 +65,75 @@
 
 ---
 
-## Phase 2: Core Infrastructure
+## Phase 0.5: Data Discovery & Schema Design 🔥 CURRENT PHASE
 
-### 2.1 LiteRT/MediaPipe Integration
+**Purpose**: Review actual financial data to design accurate entity types, relationships, category taxonomy, and chunk formats.
+
+**Analysis Document**: [DATA-ANALYSIS-SUMMARY.md](docs/DATA-ANALYSIS-SUMMARY.md)
+
+### 0.5.1 Data Source Inventory
+| Status | Task | Acceptance Criteria |
+|--------|------|---------------------|
+| ✅ | List all bank/checking accounts | BOA Billing, BOA Spending documented |
+| ✅ | List all credit cards | BOA CC, Chase CC documented |
+| ⬜ | List all investment accounts | Betterment identified but not detailed |
+| ✅ | List other sources (Amazon, PayPal, etc.) | Amazon order history documented |
+| ✅ | Identify date ranges available | Oct 1, 2024 - Nov 27, 2025 (14 months) |
+| ✅ | Identify gaps in data | Investment details, income LES PDFs |
+
+### 0.5.2 Data Export & Collection
+| Status | Task | Acceptance Criteria |
+|--------|------|---------------------|
+| ✅ | Export from each identified source | Raw files collected |
+| ✅ | Document file formats (CSV, XLSX, PDF) | BOA CSV/XLSX, Chase CSV, Amazon CSV |
+| ✅ | Organize in /data/raw/ folder | boa/, chase/, amazon/, income/ |
+
+### 0.5.3 Data Structure Review
+| Status | Task | Acceptance Criteria |
+|--------|------|---------------------|
+| ✅ | Review columns/fields per source | All schemas documented |
+| ✅ | Identify data types per field | Date, amount, string identified |
+| ✅ | Sample 10-20 rows per source | Understand value patterns |
+| ✅ | Identify commonalities across sources | Date, Amount, Description common |
+| ✅ | Identify differences across sources | Chase has Category, BOA does not |
+
+### 0.5.4 Vendor/Payee Analysis
+| Status | Task | Acceptance Criteria |
+|--------|------|---------------------|
+| ✅ | Extract unique vendors across sources | Top payees identified per source |
+| 🟡 | Identify vendor name variations | DoorDash, Amazon patterns noted |
+| ⬜ | Create vendor normalization rules | Mapping table needed |
+| 🟡 | Categorize vendors by type | Using Chase categories + extension |
+
+### 0.5.5 Category Taxonomy Design
+| Status | Task | Acceptance Criteria |
+|--------|------|---------------------|
+| ✅ | Review any existing categorization | Chase has 13 categories |
+| ✅ | Design hierarchical category structure | Income/Bills/Expenses/Transfers/Taxes |
+| 🟡 | Map vendors to categories | Initial mapping in summary |
+| ⬜ | Identify uncategorizable items | Edge cases |
+
+### 0.5.6 Schema Design (Based on Real Data)
+| Status | Task | Acceptance Criteria |
+|--------|------|---------------------|
+| ✅ | Define entity types from data | Transaction, Account, Vendor, Category |
+| ✅ | Define relationship types from data | belongs_to, paid_from, transferred_to |
+| ✅ | Design unified transaction schema | Draft in DATA-ANALYSIS-SUMMARY.md |
+| ⬜ | Design chunk format for LLM | Optimized for extraction |
+| ✅ | Document design decisions | Rationale captured |
+
+### 0.5.7 Documentation
+| Status | Task | Acceptance Criteria |
+|--------|------|---------------------|
+| ✅ | Create DATA-INVENTORY.md | All sources documented |
+| 🟡 | Create SCHEMA-DESIGN.md | Draft in summary, needs formal doc |
+| ⬜ | Update FAMILY-BUDGET-POC.md | Reflect actual schema |
+
+---
+
+## Phase 1: Core Infrastructure
+
+### 1.1 LiteRT/MediaPipe Integration
 | Status | Task | Acceptance Criteria |
 |--------|------|---------------------|
 | ⬜ | Create LiteRTService class | Wrapper around MediaPipe LlmInference |
@@ -76,7 +142,7 @@
 | ⬜ | Add 3-minute timeout | Gracefully handles hung inference |
 | ⬜ | Test with simple prompt | "Hello, world" returns valid response |
 
-### 2.2 File Management
+### 1.2 File Management
 | Status | Task | Acceptance Criteria |
 |--------|------|---------------------|
 | ⬜ | Create GraphRAGFileManager | Handles all /sdcard/graphrag/ operations |
@@ -85,7 +151,7 @@
 | ⬜ | Implement progress tracking | Saves/loads current_job.json for resume |
 | ⬜ | Add directory initialization | Creates folders if missing |
 
-### 2.3 Preprocessing Pipeline
+### 1.3 Preprocessing Pipeline
 | Status | Task | Acceptance Criteria |
 |--------|------|---------------------|
 | ⬜ | Create ChunkPreprocessor | Cleans chunks before LLM |
@@ -93,7 +159,7 @@
 | ⬜ | Implement truncateToTokenLimit() | Keeps chunks under model context |
 | ⬜ | Add content validation | Skips empty/invalid chunks |
 
-### 2.4 WorkManager Worker
+### 1.4 WorkManager Worker
 | Status | Task | Acceptance Criteria |
 |--------|------|---------------------|
 | ⬜ | Create GraphRAGWorker | Extends CoroutineWorker |
@@ -301,6 +367,12 @@
 
 ## Progress Log
 
+### November 27, 2025
+- Added Phase 0.5: Data Discovery & Schema Design
+- Decision: Review actual financial data BEFORE building scaffolding
+- Rationale: Design entity types, relationships, category taxonomy, and chunk format based on real data patterns
+- Next: User to provide data source inventory
+
 ### November 26, 2025
 - Project initiated
 - Created GitHub repository (AFHJackson/phone-graphrag-framework)
@@ -314,4 +386,4 @@
 
 ---
 
-*Last Updated: November 26, 2025*
+*Last Updated: November 27, 2025*

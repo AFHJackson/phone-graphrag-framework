@@ -2,22 +2,35 @@ version: '3.8'
 
 services:
   postgres-age:
-    image: apache/age:latest
-    container_name: graphrag-db
+    image: apache/age:PG16-latest
+    container_name: family-budget-db
     environment:
-      POSTGRES_USER: graphrag
-      POSTGRES_PASSWORD: graphrag_secure_password
-      POSTGRES_DB: knowledge_base
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: family_budget
     ports:
       - "5432:5432"
     volumes:
       - graphrag_data:/var/lib/postgresql/data
-      - ./sql:/docker-entrypoint-initdb.d:ro
+      - ../sql:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U graphrag -d knowledge_base"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d family_budget"]
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
+
+  # pgAdmin for database management (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: family-budget-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres-age
     restart: unless-stopped
 
 volumes:
