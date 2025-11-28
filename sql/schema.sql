@@ -7,12 +7,11 @@
 CREATE EXTENSION IF NOT EXISTS age;
 CREATE EXTENSION IF NOT EXISTS vector;
 
--- Load Apache AGE
+-- Load Apache AGE (for graph queries later)
 LOAD 'age';
-SET search_path = ag_catalog, "$user", public;
 
 -- ============================================================
--- RELATIONAL TABLES (Source of Truth)
+-- RELATIONAL TABLES (Source of Truth) - in public schema
 -- ============================================================
 
 -- Accounts (checking, credit cards, investment)
@@ -143,8 +142,16 @@ CREATE INDEX idx_amazon_orders_date ON amazon_orders(order_date);
 -- APACHE AGE GRAPH SCHEMA
 -- ============================================================
 
--- Create the graph
-SELECT create_graph('family_budget');
+-- Create the graph (requires ag_catalog search path)
+DO $$
+BEGIN
+    SET search_path = ag_catalog, "$user", public;
+    PERFORM create_graph('family_budget');
+EXCEPTION WHEN OTHERS THEN
+    -- Graph may already exist, that's OK
+    NULL;
+END;
+$$;
 
 -- ============================================================
 -- GRAPH NODE LABELS (Entity Types)
