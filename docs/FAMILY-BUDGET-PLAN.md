@@ -265,18 +265,18 @@ Track metrics over time and alert on significant changes.
 ## Starting Point Assessment
 
 ### What We Have
-- [ ] Phone hardware (Samsung S25 Ultra) - **Available**
-- [ ] Working LLM inference (Gemma 3n via MediaPipe) - **Proven in Mind-Time**
-- [ ] Framework architecture pattern (WorkManager, etc.) - **Documented**
-- [ ] PostgreSQL/AGE setup - **Documented**
-- [ ] Raw financial data - **Partially gathered, needs inventory**
+- [x] Phone hardware (Samsung S25 Ultra) - **Available**
+- [x] Working LLM inference (Gemma 3n via MediaPipe) - **Proven in Mind-Time**
+- [x] Framework architecture pattern (WorkManager, etc.) - **Documented**
+- [x] PostgreSQL/AGE setup - **Running in WSL**
+- [x] Raw financial data - **4,109 transactions + 3,162 Amazon orders loaded**
 
 ### What We Need to Build
-- [ ] Android app for this project (new, separate from Mind-Time)
-- [ ] Financial data ingestion scripts
-- [ ] Financial-specific extraction prompts
-- [ ] Curation tooling
-- [ ] Reporting queries
+- [ ] Android app for this project - **Deferred (structured data doesn't need on-device LLM)**
+- [x] Financial data ingestion scripts - **etl_pipeline.py, load_to_database.py**
+- [ ] Financial-specific extraction prompts - **Deferred (using deterministic rules instead)**
+- [x] Curation tooling - **100+ CATEGORY_RULES in load_to_database.py**
+- [x] Reporting queries - **priority_alignment.sql, amazon_categorize.sql, etc.**
 - [ ] Monitoring system
 
 ### What We Need to Do (Non-Technical)
@@ -447,10 +447,10 @@ Week 1-2        Week 2-3        Week 3-4        Week 4-5        Week 5+
 |---------|------|--------|-------|
 | T0.1.1 | Create GitHub repository | ✅ | AFHJackson/phone-graphrag-framework |
 | T0.1.2 | Create feature/family-budget branch | ✅ | Working branch |
-| T0.1.3 | Set up Android Studio project | ⬜ | Kotlin + Compose |
-| T0.1.4 | Configure Gradle dependencies | ⬜ | WorkManager, MediaPipe, Serialization |
-| T0.1.5 | Create project package structure | ⬜ | ai/, worker/, ui/, data/ |
-| T0.1.6 | Test empty app builds and runs | ⬜ | Sanity check |
+| T0.1.3 | Set up Android Studio project | ⏸️ | Deferred - structured data uses SQL |
+| T0.1.4 | Configure Gradle dependencies | ⏸️ | Deferred |
+| T0.1.5 | Create project package structure | ⏸️ | Deferred |
+| T0.1.6 | Test empty app builds and runs | ⏸️ | Deferred |
 
 ### 0.2 Documentation
 | Task ID | Task | Status | Notes |
@@ -474,13 +474,13 @@ Week 1-2        Week 2-3        Week 3-4        Week 4-5        Week 5+
 ### 1.1 Data Inventory
 | Task ID | Task | Status | Notes |
 |---------|------|--------|-------|
-| T1.1.1 | List all bank/checking accounts | ⬜ | |
-| T1.1.2 | List all credit cards | ⬜ | |
-| T1.1.3 | List all investment accounts | ⬜ | |
-| T1.1.4 | List other financial data sources | ⬜ | Amazon, PayPal, etc. |
-| T1.1.5 | Identify date ranges available | ⬜ | Target: 12 months |
-| T1.1.6 | Identify gaps in data | ⬜ | |
-| T1.1.7 | Document export procedures per source | ⬜ | |
+| T1.1.1 | List all bank/checking accounts | ✅ | BOA Billing, BOA Spending |
+| T1.1.2 | List all credit cards | ✅ | BOA CC, Chase CC |
+| T1.1.3 | List all investment accounts | ⬜ | Not yet included |
+| T1.1.4 | List other financial data sources | ✅ | Amazon orders |
+| T1.1.5 | Identify date ranges available | ✅ | Oct 2024 - Nov 2025 (14 months) |
+| T1.1.6 | Identify gaps in data | ✅ | See DATA-INVENTORY.md |
+| T1.1.7 | Document export procedures per source | ✅ | CSV exports documented |
 
 ### 1.2 Data Export
 | Task ID | Task | Status | Notes |
@@ -508,13 +508,13 @@ Week 1-2        Week 2-3        Week 3-4        Week 4-5        Week 5+
 ### 1.4 Categorization
 | Task ID | Task | Status | Notes |
 |---------|------|--------|-------|
-| T1.4.1 | Define category taxonomy | ⬜ | Hierarchical categories |
-| T1.4.2 | Create vendor → category mapping rules | ⬜ | Auto-categorization |
-| T1.4.3 | Run auto-categorization | ⬜ | |
-| T1.4.4 | Generate uncategorized list | ⬜ | |
-| T1.4.5 | Manual categorization review | ⬜ | |
-| T1.4.6 | Update rules from manual review | ⬜ | |
-| T1.4.7 | Validate categorization coverage | ⬜ | Target: 95%+ |
+| T1.4.1 | Define category taxonomy | ✅ | 98 categories in seed_categories.sql |
+| T1.4.2 | Create vendor → category mapping rules | ✅ | 100+ rules in CATEGORY_RULES |
+| T1.4.3 | Run auto-categorization | ✅ | Shopping reduced from $105K to $54K |
+| T1.4.4 | Generate uncategorized list | ✅ | shopping_breakdown.sql |
+| T1.4.5 | Manual categorization review | ✅ | Iterative refinement done |
+| T1.4.6 | Update rules from manual review | ✅ | Multiple iterations |
+| T1.4.7 | Validate categorization coverage | ✅ | 95%+ achieved |
 
 ### 1.5 Chunking for LLM
 | Task ID | Task | Status | Notes |
@@ -536,11 +536,11 @@ Week 1-2        Week 2-3        Week 3-4        Week 4-5        Week 5+
 ### 1.7 Graph Loading
 | Task ID | Task | Status | Notes |
 |---------|------|--------|-------|
-| T1.7.1 | Start PostgreSQL + AGE | ⬜ | Docker |
-| T1.7.2 | Create graph schema | ⬜ | Node labels, edge types |
-| T1.7.3 | Write graph loader script | ⬜ | |
-| T1.7.4 | Load entities and relationships | ⬜ | |
-| T1.7.5 | Validate with test queries | ⬜ | |
+| T1.7.1 | Start PostgreSQL + AGE | ✅ | Running in WSL Ubuntu |
+| T1.7.2 | Create graph schema | ✅ | schema.sql with AGE graph |
+| T1.7.3 | Write graph loader script | ✅ | load_to_database.py build_graph() |
+| T1.7.4 | Load entities and relationships | ✅ | 5 Accounts, 98 Categories, 639 Vendors, 2000 Txns |
+| T1.7.5 | Validate with test queries | ✅ | graph_examples.sql, check_graph.sql |
 
 ---
 
@@ -549,22 +549,22 @@ Week 1-2        Week 2-3        Week 3-4        Week 4-5        Week 5+
 ### 2.1 Spending Analysis Queries
 | Task ID | Task | Status | Notes |
 |---------|------|--------|-------|
-| T2.1.1 | Query: Total spend by category | ⬜ | |
-| T2.1.2 | Query: Total spend by vendor | ⬜ | |
-| T2.1.3 | Query: Spend by month | ⬜ | |
-| T2.1.4 | Query: Category trends over time | ⬜ | |
-| T2.1.5 | Query: Top 10 vendors | ⬜ | |
-| T2.1.6 | Query: Recurring transactions | ⬜ | |
-| T2.1.7 | Query: Large one-time expenses | ⬜ | |
+| T2.1.1 | Query: Total spend by category | ✅ | priority_alignment.sql |
+| T2.1.2 | Query: Total spend by vendor | ✅ | shopping_breakdown.sql |
+| T2.1.3 | Query: Spend by month | ⬜ | Not yet built |
+| T2.1.4 | Query: Category trends over time | ⬜ | Not yet built |
+| T2.1.5 | Query: Top 10 vendors | ✅ | shopping_breakdown.sql |
+| T2.1.6 | Query: Recurring transactions | ⬜ | Not yet built |
+| T2.1.7 | Query: Large one-time expenses | ⬜ | Not yet built |
 
 ### 2.2 Revealed Priority Analysis
 | Task ID | Task | Status | Notes |
 |---------|------|--------|-------|
-| T2.2.1 | Design revealed priority algorithm | ⬜ | Spend amount + frequency |
-| T2.2.2 | Implement priority scoring | ⬜ | |
-| T2.2.3 | Generate revealed priority ranking | ⬜ | |
-| T2.2.4 | Create revealed priority report | ⬜ | Human-readable |
-| T2.2.5 | Review and annotate findings | ⬜ | |
+| T2.2.1 | Design revealed priority algorithm | ✅ | Spend amount ranking |
+| T2.2.2 | Implement priority scoring | ✅ | alignment_compare.sql |
+| T2.2.3 | Generate revealed priority ranking | ✅ | Shopping #1, Faith #14 |
+| T2.2.4 | Create revealed priority report | ✅ | priority_alignment.sql output |
+| T2.2.5 | Review and annotate findings | ✅ | Discussed with user |
 
 ---
 
@@ -581,12 +581,12 @@ Week 1-2        Week 2-3        Week 3-4        Week 4-5        Week 5+
 ### 3.2 Priority Documentation
 | Task ID | Task | Status | Notes |
 |---------|------|--------|-------|
-| T3.2.1 | Conduct couple conversation | ⬜ | |
-| T3.2.2 | Merge priority lists | ⬜ | |
-| T3.2.3 | Create priority ranking | ⬜ | |
-| T3.2.4 | Write priority definitions | ⬜ | |
-| T3.2.5 | Note disagreement areas | ⬜ | |
-| T3.2.6 | Load declared priorities to graph | ⬜ | |
+| T3.2.1 | Conduct couple conversation | ✅ | Brain-dump captured priorities |
+| T3.2.2 | Merge priority lists | ✅ | 14 priorities defined |
+| T3.2.3 | Create priority ranking | ✅ | Faith #1 through Shopping #14 |
+| T3.2.4 | Write priority definitions | ✅ | In seed_priorities.sql |
+| T3.2.5 | Note disagreement areas | ⬜ | Not documented |
+| T3.2.6 | Load declared priorities to graph | ✅ | priorities table + category_priorities |
 
 ---
 
@@ -595,9 +595,12 @@ Week 1-2        Week 2-3        Week 3-4        Week 4-5        Week 5+
 ### 4.1 Alignment Analysis
 | Task ID | Task | Status | Notes |
 |---------|------|--------|-------|
-| T4.1.1 | Map categories to priorities | ⬜ | supports/neutral/conflicts |
-| T4.1.2 | Design alignment scoring | ⬜ | |
-| T4.1.3 | Calculate alignment scores | ⬜ | |
+| T4.1.1 | Map categories to priorities | ✅ | category_priorities table |
+| T4.1.2 | Design alignment scoring | ✅ | Priority rank vs Spend rank gap |
+| T4.1.3 | Calculate alignment scores | ✅ | alignment_compare.sql |
+| T4.1.4 | Identify over-spend categories | ✅ | Shopping, Entertainment |
+| T4.1.5 | Identify under-spend categories | ✅ | Faith, Family |
+| T4.1.6 | Generate alignment gap report | ✅ | Before/after Amazon comparison |
 | T4.1.4 | Identify over-spend categories | ⬜ | Low priority, high spend |
 | T4.1.5 | Identify under-spend categories | ⬜ | High priority, low spend |
 | T4.1.6 | Generate alignment gap report | ⬜ | |
@@ -605,11 +608,11 @@ Week 1-2        Week 2-3        Week 3-4        Week 4-5        Week 5+
 ### 4.2 Surplus Planning
 | Task ID | Task | Status | Notes |
 |---------|------|--------|-------|
-| T4.2.1 | Rank reduction candidates | ⬜ | By impact and difficulty |
+| T4.2.1 | Rank reduction candidates | 🟡 | **NEXT STEP**: Find $4K/month |
 | T4.2.2 | Estimate realistic savings per item | ⬜ | |
 | T4.2.3 | Calculate potential monthly surplus | ⬜ | |
-| T4.2.4 | Identify quick wins | ⬜ | Easy, high impact |
-| T4.2.5 | Define target surplus amount | ⬜ | |
+| T4.2.4 | Identify quick wins | ⬜ | |
+| T4.2.5 | Define target surplus amount | ✅ | $4,000/month = $48K/year |
 | T4.2.6 | Create surplus action plan | ⬜ | |
 
 ### 4.3 Asset Strategy
@@ -799,6 +802,98 @@ Stay alert for causal relationships:
 
 ---
 
-*Document Version: 1.0*  
-*Last Updated: November 26, 2025*  
-*Next Review: After Milestone 1 completion*
+# PART 7: CURRENT STATUS & NEXT STEPS
+
+*Added: December 7, 2025*
+
+## Current Status Summary
+
+### Milestones Achieved
+
+| Milestone | Status | Notes |
+|-----------|--------|-------|
+| **M1: Data Ready** | ✅ Complete | 4,109 transactions, 3,162 Amazon orders loaded |
+| **M2: Priorities Revealed** | ✅ Complete | Priority alignment analysis shows Shopping #1, Faith #14 |
+| **M3: Priorities Declared** | ✅ Complete | 14 priorities ranked from brain-dump conversation |
+| **M4: Gap Quantified** | ✅ Complete | Gap analysis shows 13-point misalignment at extremes |
+| **M5: Deploy & Monitor** | 🟡 In Progress | Ready for reduction planning |
+
+### Technical Infrastructure
+
+| Component | Status |
+|-----------|--------|
+| PostgreSQL 17.6 + Apache AGE | ✅ Running in WSL |
+| pgvector extension | ✅ Installed (embeddings not yet generated) |
+| ETL Pipeline | ✅ 100+ category mapping rules |
+| Graph Database | ✅ 5 Accounts, 639 Vendors, 2000 Transaction nodes |
+| Amazon Categorization | ✅ Keyword-based product categorization view |
+| Priority Alignment Queries | ✅ Before/after Amazon comparison |
+
+### Key Findings (14 months: Oct 2024 - Nov 2025)
+
+**Priority vs Spending Alignment:**
+| Priority Rank | Priority | Spend Rank | Gap |
+|:---:|---|:---:|:---:|
+| 1 | Faith & Community | 14 | **13** ⚠️ |
+| 2 | Health & Fitness | 4 | 2 |
+| 3 | Family & Education | 8 | 5 |
+| 4 | Housing Stability | 2 | 2 ✅ |
+| 5 | Food & Nutrition | 3 | 2 ✅ |
+| 14 | Shopping | 1 | **13** ⚠️ |
+
+**Total Spending by Priority (with Amazon integration):**
+- Shopping: $90K (21.6%) - #14 priority, #1 spending
+- Housing: $58K (17.8%) - well-aligned
+- Food: $44K (13.5%) - well-aligned
+- Health: $32K (9.8%) - improved with Amazon categorization
+- Faith: $5K (1.5%) - #1 priority, #14 spending
+
+---
+
+## Next Step: Find $4,000/Month Reduction Target
+
+### Objective
+Identify **$48,000/year ($4,000/month)** in reducible spending that can be redirected toward asset acquisition without impacting declared priorities.
+
+### Approach
+This is an **iterative discovery process**:
+
+1. **First Pass**: Identify obvious reduction candidates from low-priority high-spend categories
+2. **Refinement**: Discover where categorization is too blunt (Chase categories don't distinguish priority context)
+3. **Nuance**: Same vendor may serve different priorities (restaurant = family dinner vs entertainment)
+4. **Iterate**: Refine rules, possibly engage LLM for complex classification, re-analyze
+
+### What We Expect to Discover
+- Some "Shopping" spending is actually priority-aligned (Amazon supplements → Health)
+- Some "Food" is reducible (delivery fees, impulse purchases)
+- Some spending requires context the LLM may help with
+- The $4K target will force us to confront data quality issues
+
+### Tools Available (On the Workbench)
+| Tool | Status | Use When |
+|------|--------|----------|
+| SQL + Deterministic Rules | Active | Works for clear vendor→category mapping |
+| Amazon Product Categorization | Active | Keyword-based product classification |
+| Phone LLM (Gemma 3n) | Available | If we need context-aware classification |
+| pgvector Embeddings | Available | If we need semantic search |
+
+**Note**: We're not putting away the phone-based LLM capabilities. Chase categories are vendor-centric, not priority-centric. We may discover we need smarter classification than deterministic rules can provide.
+
+---
+
+## Immediate Tasks
+
+| Task | Description | Status |
+|------|-------------|--------|
+| T-NEXT.1 | Pull monthly spending breakdown by category | ⬜ |
+| T-NEXT.2 | Identify "obviously reducible" spending (low priority, discretionary) | ⬜ |
+| T-NEXT.3 | Calculate if obvious reductions reach $4K/month | ⬜ |
+| T-NEXT.4 | Identify ambiguous spending requiring context | ⬜ |
+| T-NEXT.5 | Propose refinements to categorization rules | ⬜ |
+| T-NEXT.6 | Iterate until confident reduction plan | ⬜ |
+
+---
+
+*Document Version: 2.0*  
+*Last Updated: December 7, 2025*  
+*Next Review: After $4K reduction analysis complete*
